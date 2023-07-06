@@ -2,7 +2,15 @@ import React, { useEffect, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import Todo from "./Todo";
 import { db } from "./Backend/Firebase_Init";
-import { query, collection, onSnapshot } from "firebase/firestore";
+import {
+  query,
+  collection,
+  onSnapshot,
+  updateDoc,
+  doc,
+  addDoc,
+  deleteDoc,
+} from "firebase/firestore";
 
 const style = {
   bg: `h-screen w-screen p-4 bg-gradient-to-r from-[#2F80ED] to-[#1CB5E0]`,
@@ -16,8 +24,24 @@ const style = {
 
 function App() {
   const [todos, setTodos] = useState([]);
+  const [newTodo, setNewTodo] = useState("");
 
+  const updateNewTodo = (e) => {
+    setNewTodo(e.target.value);
+  };
   //create todo
+  const createNewTodo = async (e) => {
+    e.preventDefault(e);
+    if (newTodo === "") {
+      alert("New Todo cannot be empty");
+      return;
+    }
+    await addDoc(collection(db, "todos"), {
+      text: newTodo,
+      completed: false,
+    });
+    setNewTodo("");
+  };
   //read todo
   useEffect(() => {
     const q = query(collection(db, "todos"));
@@ -31,25 +55,44 @@ function App() {
     return () => unsubscribe();
   }, []);
   //update todo in firebase
+  const updateComplete = async (todo) => {
+    await updateDoc(doc(db, "todos", todo.id), {
+      completed: !todo.completed,
+    });
+  };
   //delete todo
 
+  const deleteTodo = async (todo) => {
+    await deleteDoc(doc(db, "todos", todo.id));
+  };
   return (
     <div className={style.bg}>
       <div>
         <div className={style.container}>
           <h3 className={style.heading}>Todo App</h3>
-          <form className={style.form}>
-            <input type="text" className={style.input} placeholder="Add Todo" />
+          <form className={style.form} onSubmit={createNewTodo}>
+            <input
+              value={newTodo}
+              onChange={updateNewTodo}
+              type="text"
+              className={style.input}
+              placeholder="Add Todo"
+            />
             <button className={style.button}>
               <AiOutlinePlus size={30} />
             </button>
           </form>
           <ul>
             {todos.map((todo, index) => (
-              <Todo key={index} todo={todo} />
+              <Todo
+                key={index}
+                todo={todo}
+                updateComplete={updateComplete}
+                deleteTodo={deleteTodo}
+              />
             ))}
           </ul>
-          <p className={style.count}>You have 2 todos</p>
+          <p className={style.count}>You have {todos.length} todos</p>
         </div>
       </div>
     </div>
