@@ -1,2 +1,2 @@
 # CSCI-621-Project
-A React application with google's firebase db as backend
+A To-do list application developed using ReactJs and google's firebase db as backend
