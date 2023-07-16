@@ -6,7 +6,7 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 import { auth } from "../Backend/Firebase_Init";
-const AuthenticationContext = createContext();
+const ApplicationContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -27,14 +27,14 @@ export const AuthContextProvider = ({ children }) => {
     };
   }, []);
   return (
-    <AuthenticationContext.Provider
+    <ApplicationContext.Provider
       value={{ authGoogle, user, signingOut, setUser }}
     >
       {children}
-    </AuthenticationContext.Provider>
+    </ApplicationContext.Provider>
   );
 };
 
-export const UserAuth = () => {
-  return useContext(AuthenticationContext);
+export const AppContext = () => {
+  return useContext(ApplicationContext);
 };

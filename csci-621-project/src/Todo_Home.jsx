@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import Todo from "./Todo";
 import { db } from "./Backend/Firebase_Init";
-import { UserAuth } from "./Authentication/AuthenticationCtx";
+import { AppContext } from "./AppContext/AuthenticationCtx";
 import { Link, useNavigate } from "react-router-dom";
 import {
   query,
@@ -97,7 +97,7 @@ function TodoHome() {
     setNewTodo("");
   };
 
-  const { authGoogle, user, signingOut, setUser } = UserAuth();
+  const { authGoogle, user, signingOut, setUser } = AppContext();
   const nav = useNavigate();
 
   return (

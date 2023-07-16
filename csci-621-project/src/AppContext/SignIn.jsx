@@ -1,6 +1,6 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useEffect, useState } from "react";
-import { UserAuth } from "./AuthenticationCtx";
+import { AppContext } from "./AuthenticationCtx";
 import { GoogleButton } from "react-google-button";
 import { useNavigate } from "react-router-dom";
 import img from "../resources/signin_back.webp";
@@ -14,7 +14,7 @@ const style = {
 };
 
 const SignIn = () => {
-  const { authGoogle, user, signingOut } = UserAuth();
+  const { authGoogle, user, signingOut } = AppContext();
   const handleGoogleSignin = async () => {
     try {
       await authGoogle();
