@@ -138,6 +138,7 @@ function TodoHome() {
           <div className={style.container}>
             <ul>
               {todos
+                .sort((todo1, todo2) => (todo1.text < todo2.text ? 1 : -1))
                 .sort((todo1, todo2) =>
                   todo1.completed > todo2.completed ? 1 : -1
                 )
